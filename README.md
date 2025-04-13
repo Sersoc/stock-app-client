@@ -24,7 +24,7 @@ Select React & Vite
 
 ## Used API
 1. [FinnHUB](https://finnhub.io/)   
-
+2. [TWELVEDATA](https://twelvedata.com/)
 ## Usage 
 ### Install dependencies
 ```

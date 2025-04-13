@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Stock from "./components/Stock";
 
 interface StockQuote {
   c: number; // 현재가
@@ -17,6 +18,9 @@ interface RateLimit {
 function App() {
   const [stock, setStock] = useState<StockQuote | null>(null);
   const [rateLimit, setRateLimit] = useState<RateLimit | null>(null);
+  
+  const percent = stock? ((stock.c - stock.pc)/stock.pc*100).toFixed(2) : undefined;
+  
   useEffect(() => {
     async function fetchData() {
       const res = await fetch("http://localhost:3002/api/stock/SOXL");
@@ -34,10 +38,11 @@ function App() {
 
   return (
     <div style={{ padding: "2rem" }}>
+      <Stock/>
       <h1>SOXL 주가 정보</h1>
       {stock ? (
         <div>
-          <p>📈 현재가: {stock.c}</p>
+          <p>📈 현재가: {stock.c}({percent}%)</p>
           <p>🔺 고가: {stock.h}</p>
           <p>🔻 저가: {stock.l}</p>
           <p>🟢 시가: {stock.o}</p>
