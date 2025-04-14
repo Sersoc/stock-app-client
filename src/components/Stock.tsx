@@ -30,7 +30,7 @@ export default function Stock() {
   return (
     <div style={{ padding: "2rem" }}>
       <h2>SOXL 주가 그래프</h2>
-      <StockChart/>
+      <StockChart symbol="SOXL"/>
     </div>
   );
 }

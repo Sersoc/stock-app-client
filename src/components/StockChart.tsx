@@ -19,12 +19,15 @@ interface ChartItem {
   y: number; // close price
 }
 
-const ChartComponent = () => {
+interface StockChartProps{
+  symbol : string;
+}
+export default function StockChart({symbol}:StockChartProps){
   const [chartData, setChartData] = useState<ChartData<'line'> | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:3002/api/chart/SOXL");
+      const response = await fetch(`http://localhost:3002/api/chart/${symbol}`);
       const data = await response.json();
 
       if (data.status === "ok") {
@@ -49,7 +52,7 @@ const ChartComponent = () => {
     };
 
     fetchData();
-  }, []);
+  }, [symbol]);
 
   if (!chartData) return <div>로딩 중...</div>;
 
@@ -60,5 +63,3 @@ const ChartComponent = () => {
     </div>
   );
 };
-
-export default ChartComponent;
