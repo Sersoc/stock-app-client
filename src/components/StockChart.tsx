@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, registerables } from 'chart.js';
-import { ChartData } from 'chart.js';
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, registerables } from "chart.js";
+import { ChartData } from "chart.js";
 
 ChartJS.register(...registerables);
 
@@ -19,12 +19,16 @@ interface ChartItem {
   y: number; // close price
 }
 
-const ChartComponent = () => {
-  const [chartData, setChartData] = useState<ChartData<'line'> | null>(null);
+interface ChartComponentProps {
+  symbol: string;
+}
+export default function StockChart({symbol}: ChartComponentProps) {
+  const [chartData, setChartData] = useState<ChartData<"line"> | null>(null);
 
   useEffect(() => {
+    console.log("Symbol:", symbol);
     const fetchData = async () => {
-      const response = await fetch("http://localhost:3002/api/chart/SOXL");
+      const response = await fetch(`http://localhost:3002/api/chart/${symbol}`);
       const data = await response.json();
 
       if (data.status === "ok") {
@@ -49,7 +53,7 @@ const ChartComponent = () => {
     };
 
     fetchData();
-  }, []);
+  }, [symbol]);
 
   if (!chartData) return <div>로딩 중...</div>;
 
@@ -59,6 +63,4 @@ const ChartComponent = () => {
       <Line data={chartData} />
     </div>
   );
-};
-
-export default ChartComponent;
+}
