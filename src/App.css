@@ -1,28 +1,15 @@
 header{
-  display: flex;
+  /* display: flex; */
   background-color: #61dafbaa;
+  font-family: CondensedOne;
+  font-size: 2rem;
+  text-align: center;
+  
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.graph{
+  height: 20rem;
+  align-content: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -31,10 +18,8 @@ header{
   }
 }
 
-.card {
-  padding: 2em;
-}
 
-.read-the-docs {
-  color: #888;
+@font-face {
+  font-family: "CondensedOne";
+  src: url("./fonts/SpecialGothicCondensedOne-Regular.ttf");
 }

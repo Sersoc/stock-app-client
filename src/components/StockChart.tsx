@@ -28,7 +28,9 @@ export default function StockChart({ symbol, startDate }: StockChartProps) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3002/api/chart/${symbol}/${startDate}`);
+      const response = await fetch(
+        `http://localhost:3002/api/chart/${symbol}/${startDate}`
+      );
       const data = await response.json();
 
       if (data.status === "ok") {
@@ -53,14 +55,16 @@ export default function StockChart({ symbol, startDate }: StockChartProps) {
     };
 
     fetchData();
-  }, [symbol,startDate]);
+  }, [symbol, startDate]);
 
   if (!chartData) return <div>로딩 중...</div>;
 
   return (
     <div>
       <h2>Stock Price Chart</h2>
-      <Line data={chartData} />
+      <div className="w-full max-w-[500px]">
+        <Line data={chartData} />
+      </div>
     </div>
   );
 }

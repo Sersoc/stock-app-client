@@ -25,12 +25,17 @@ export default function Stock() {
   const [chartPeriod, setChartPeriod] = useState<string>("14");
   const [stock, setStock] = useState<StockQuote | null>(null);
   const [rateLimit, setRateLimit] = useState<RateLimit | null>(null);
-  
-  const percent = stock? ((stock.c - stock.pc)/stock.pc*100).toFixed(2) : undefined;
-  
+  const [ticker, setTicker] = useState<string>();
+  const percent = stock
+    ? (((stock.c - stock.pc) / stock.pc) * 100).toFixed(2)
+    : undefined;
+
+  function handleTicker(e: React.ChangeEvent<HTMLInputElement>) {
+    setTicker(e.target.value);
+  }
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("http://localhost:3002/api/stock/336260.KQ");
+      const res = await fetch(`http://localhost:3002/api/stock/${ticker}`);
       const data = await res.json();
 
       setStock(data); // 주가 데이터
@@ -41,18 +46,29 @@ export default function Stock() {
       });
     }
     fetchData();
-  }, []);
+  }, [ticker]);
   function handlePeriod(period: string) {
     setChartPeriod(period);
     console.log(period);
   }
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>두산퓨얼셀 주가 정보</h1>
+    <div>
+      <input
+        type="text"
+        value={ticker}
+        onChange={handleTicker}
+        // onKeyDown={handleTicker}
+        placeholder="Input Ticker"
+        className="text-xl font-bold "
+      />
+      {ticker && <h1>{ticker} 주가 정보</h1>}
+
       {stock ? (
         <div>
-          <p>📈 현재가: {stock.c}({percent}%)</p>
+          <p>
+            📈 현재가: {stock.c}({percent}%)
+          </p>
           <p>🔺 고가: {stock.h}</p>
           <p>🔻 저가: {stock.l}</p>
           <p>🟢 시가: {stock.o}</p>
@@ -75,11 +91,11 @@ export default function Stock() {
       ) : (
         <p></p>
       )}
-      <StockChart symbol="336260.KQ" startDate={chartPeriod} />
-      <button onClick={()=>handlePeriod("1")}>1day</button>
-      <button onClick={()=>handlePeriod("7")}>1week</button>
-      <button onClick={()=>handlePeriod("30")}>1month</button>
-      <button onClick={()=>handlePeriod("365")}>1year</button>
-      </div>
+      <StockChart symbol={ticker?ticker:""} startDate={chartPeriod} />
+      <button onClick={() => handlePeriod("1")}>1day</button>
+      <button onClick={() => handlePeriod("7")}>1week</button>
+      <button onClick={() => handlePeriod("30")}>1month</button>
+      <button onClick={() => handlePeriod("365")}>1year</button>
+    </div>
   );
 }
