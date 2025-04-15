@@ -1,6 +1,10 @@
+
 const cors = require("cors");
 const express = require("express");
 const axios = require("axios");
+
+const yahooFinance = require("yahoo-finance2").default;
+
 require("dotenv").config();
 
 const app = express();
@@ -50,29 +54,25 @@ app.get("/api/stock/:symbol", async (req, res) => {
 });
 // 서버에 candle endpoint 추가
 app.get("/api/chart/:symbol", async (req, res) => {
-  const { symbol } = req.params;
+  const symbol = req.params.symbol;
 
   try {
-    const response = await axios.get("https://api.twelvedata.com/time_series", {
-      params: {
-        symbol:symbol.toUpperCase(),
-        interval: "5min",   // 분봉: 1min, 5min, 15min, 1h 등 가능
-        outputsize: 100,    // 가져올 데이터 개수 (최대 5000)
-        format: "JSON",
-        apikey: CHART_API_KEY,
-      },
+    const result = await yahooFinance.historical(symbol, {
+      period1: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7), // 1주일 전
+      period2: new Date(), // 지금
+      interval: "1d", // 1일 단위 데이터
     });
 
-    if (response.data.status === "error") {
-      return res.status(400).json({ error: response.data.message });
-    }
-
-    res.json(response.data);
-    console.log(response.data);
-  } catch (err) {
-    console.error("Twelve Data API Error:", err.message);
-    res.status(500).send("차트 데이터를 가져오는 중 오류 발생");
+    res.json({ status: "ok", values: result });
+    console.log(res.json);
+  } catch (error) {
+    console.error("Yahoo Finance error:", error.message);
+    res.status(500).json({ status: "error", message: error.message });
   }
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
 
 app.listen(port, () => {

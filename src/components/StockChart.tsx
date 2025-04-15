@@ -19,11 +19,11 @@ interface ChartItem {
   y: number; // close price
 }
 
-interface ChartComponentProps {
-  symbol: string;
+interface StockChartProps{
+  symbol : string;
 }
-export default function StockChart({symbol}: ChartComponentProps) {
-  const [chartData, setChartData] = useState<ChartData<"line"> | null>(null);
+export default function StockChart({symbol}:StockChartProps){
+  const [chartData, setChartData] = useState<ChartData<'line'> | null>(null);
 
   useEffect(() => {
     console.log("Symbol:", symbol);
@@ -63,4 +63,4 @@ export default function StockChart({symbol}: ChartComponentProps) {
       <Line data={chartData} />
     </div>
   );
-}
+};
