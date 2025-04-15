@@ -6,7 +6,7 @@ import { ChartData } from "chart.js";
 ChartJS.register(...registerables);
 
 interface StockData {
-  datetime: string;
+  date: string;
   open: string;
   high: string;
   low: string;
@@ -19,21 +19,21 @@ interface ChartItem {
   y: number; // close price
 }
 
-interface StockChartProps{
-  symbol : string;
+interface StockChartProps {
+  symbol: string;
+  startDate: string;
 }
-export default function StockChart({symbol}:StockChartProps){
-  const [chartData, setChartData] = useState<ChartData<'line'> | null>(null);
+export default function StockChart({ symbol, startDate }: StockChartProps) {
+  const [chartData, setChartData] = useState<ChartData<"line"> | null>(null);
 
   useEffect(() => {
-    console.log("Symbol:", symbol);
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3002/api/chart/${symbol}`);
+      const response = await fetch(`http://localhost:3002/api/chart/${symbol}/${startDate}`);
       const data = await response.json();
 
       if (data.status === "ok") {
         const points: ChartItem[] = data.values.map((item: StockData) => ({
-          x: item.datetime,
+          x: item.date.slice(0, 10),
           y: parseFloat(item.close), // 종가만 사용
         }));
 
@@ -53,7 +53,7 @@ export default function StockChart({symbol}:StockChartProps){
     };
 
     fetchData();
-  }, [symbol]);
+  }, [symbol,startDate]);
 
   if (!chartData) return <div>로딩 중...</div>;
 
@@ -63,4 +63,4 @@ export default function StockChart({symbol}:StockChartProps){
       <Line data={chartData} />
     </div>
   );
-};
+}

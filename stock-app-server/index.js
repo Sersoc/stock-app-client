@@ -53,12 +53,12 @@ app.get("/api/stock/:symbol", async (req, res) => {
   }
 });
 // 서버에 candle endpoint 추가
-app.get("/api/chart/:symbol", async (req, res) => {
+app.get("/api/chart/:symbol/:start", async (req, res) => {
   const symbol = req.params.symbol;
-
+  const start = req.params.start;
   try {
     const result = await yahooFinance.historical(symbol, {
-      period1: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7), // 1주일 전
+      period1: new Date(Date.now() - 1000 * 60 * 60 * 24 * start), // 1주일 전
       period2: new Date(), // 지금
       interval: "1d", // 1일 단위 데이터
     });
@@ -71,9 +71,6 @@ app.get("/api/chart/:symbol", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
