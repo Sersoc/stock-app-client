@@ -2,6 +2,7 @@
 // import { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
 import StockChart from "../components/StockChart";
+import { useParams } from "react-router-dom";
 
 // interface StockPoint {
 //   time: string;
@@ -25,14 +26,11 @@ export default function Stock() {
   const [chartPeriod, setChartPeriod] = useState<string>("14");
   const [stock, setStock] = useState<StockQuote | null>(null);
   const [rateLimit, setRateLimit] = useState<RateLimit | null>(null);
-  const [ticker, setTicker] = useState<string>();
   const percent = stock
     ? (((stock.c - stock.pc) / stock.pc) * 100).toFixed(2)
     : undefined;
+  const {ticker} = useParams();
 
-  function handleTicker(e: React.ChangeEvent<HTMLInputElement>) {
-    setTicker(e.target.value);
-  }
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(`http://localhost:3002/api/stock/${ticker}`);
@@ -49,19 +47,18 @@ export default function Stock() {
   }, [ticker]);
   function handlePeriod(period: string) {
     setChartPeriod(period);
-    console.log(period);
   }
 
   return (
     <div>
-      <input
+      {/* <input
         type="text"
         value={ticker}
         onChange={handleTicker}
         // onKeyDown={handleTicker}
         placeholder="Input Ticker"
         className="text-xl font-bold "
-      />
+      /> */}
       {ticker && <h1>{ticker} 주가 정보</h1>}
 
       {stock ? (
@@ -91,7 +88,7 @@ export default function Stock() {
       ) : (
         <p></p>
       )}
-      <StockChart symbol={ticker?ticker:""} startDate={chartPeriod} />
+      <StockChart symbol={ticker ? ticker : ""} period={chartPeriod} />
       <button onClick={() => handlePeriod("1")}>1day</button>
       <button onClick={() => handlePeriod("7")}>1week</button>
       <button onClick={() => handlePeriod("30")}>1month</button>

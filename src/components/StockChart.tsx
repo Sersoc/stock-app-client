@@ -21,15 +21,20 @@ interface ChartItem {
 
 interface StockChartProps {
   symbol: string;
-  startDate: string;
+  period: string;
 }
-export default function StockChart({ symbol, startDate }: StockChartProps) {
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+};
+export default function StockChart({ symbol, period }: StockChartProps) {
   const [chartData, setChartData] = useState<ChartData<"line"> | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:3002/api/chart/${symbol}/${startDate}`
+        `http://localhost:3002/api/chart/${symbol}/${period}`
       );
       const data = await response.json();
 
@@ -55,15 +60,16 @@ export default function StockChart({ symbol, startDate }: StockChartProps) {
     };
 
     fetchData();
-  }, [symbol, startDate]);
+  }, [symbol, period]);
 
   if (!chartData) return <div>로딩 중...</div>;
 
   return (
     <div>
-      <h2>Stock Price Chart</h2>
-      <div className="w-full max-w-[500px]">
-        <Line data={chartData} />
+      <div className="relative h-0 pb-[30.25%]">
+        <div className="absolute inset-0">
+          <Line data={chartData} options={options} />
+        </div>
       </div>
     </div>
   );
