@@ -1,11 +1,12 @@
-header{
-  /* display: flex; */
+/* header{
+  /* display: flex; 
   background-color: #61dafbaa;
   font-family: CondensedOne;
   font-size: 2rem;
+  color: white;
   text-align: center;
   
-}
+}  */
 
 .graph{
   height: 20rem;

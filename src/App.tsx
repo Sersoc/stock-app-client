@@ -12,9 +12,11 @@ function App() {
 
   return (
     <>
-    <AppBar></AppBar>
+    
     <Router>
+    <AppBar/>
       <Routes>
+      
         <Route path="/" element = {<Home/>}/>
         <Route path="/stock/:ticker" element = {<Stock/>}/>
         

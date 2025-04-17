@@ -1,27 +1,26 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  db:
-    image: postgres:16
-    container_name: pgdb
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypass
-      POSTGRES_DB: mydb
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    restart: unless-stopped
+      - mysql_data:/var/lib/mysql
 
   adminer:
     image: adminer
     container_name: adminer
+    restart: always
     ports:
-      - "8081:8080"
-    depends_on:
-      - db
-    restart: unless-stopped
+      - "8080:8080"
 
 volumes:
-  pgdata:
+  mysql_data:
