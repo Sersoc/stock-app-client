@@ -1,17 +1,10 @@
 const cors = require("cors");
 const express = require("express");
-const pool = require("./config/db");
-
-
-async function createData(title) {
-  const [result] = await pool.query('INSERT INTO EXAMPLE (title) VALUES (?)', [title]);
-  console.log('Inserted ID:', result.insertId);
-}
-
-createData("SOXL");
+const port = 3002;
 
 const stockChartRoutes = require("./routes/stockChartRoutes");
 const stockQuotesRoutes = require("./routes/stockQuoteRoutes");
+const favoritesRoutes = require("./routes/favoritesRoutes");
 require("dotenv").config();
 const app = express();
 app.use(
@@ -23,8 +16,8 @@ app.use(
     ],
   })
 );
-const port = 3002;
 
+app.use("/api/db", favoritesRoutes);
 app.use("/api/stock", stockQuotesRoutes);
 app.use("/api/chart", stockChartRoutes);
 
