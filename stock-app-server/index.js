@@ -16,7 +16,7 @@ app.use(
     ],
   })
 );
-
+app.use(express.json());
 app.use("/api/db", favoritesRoutes);
 app.use("/api/stock", stockQuotesRoutes);
 app.use("/api/chart", stockChartRoutes);

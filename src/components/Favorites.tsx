@@ -28,7 +28,8 @@ export default function Favorites() {
         {favorites ? (
           <section className="grid grid-cols-2 gap-3 p-2">
             {favorites.map((row) => (
-              <StockCard symbol={row.symbol} />
+              //TODO: Refactoring
+              <StockCard userId={1} symbol={row.symbol} />
             ))}
           </section>
         ) : (

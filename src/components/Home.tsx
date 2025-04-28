@@ -14,7 +14,8 @@ export default function Home() {
         {stockList.map((row, rowIndex) => (
           <section key={rowIndex} className="grid grid-cols-2 gap-3 p-2">
             {row.map((symbol) => (
-              <StockCard symbol={symbol} />
+              //TODO: Refactoring
+              <StockCard userId={1} symbol={symbol} />
             ))}
           </section>
         ))}
