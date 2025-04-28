@@ -7,7 +7,7 @@ router.get("/:symbol/:period", async (req, res) => {
   try {
     const data = await getStockChartData(symbol, period);
     res.json({ status: "ok", values: data });
-    // console.log(data);
+    console.log(data);
   } catch (error) {
     console.error("Chart route error:", error.message);
     res.status(500).json({ status: "error", message: error.message });
